@@ -60,7 +60,9 @@ def main():
     dir_path = os.path.dirname(os.path.realpath(__file__))
     out = dir_path+"//EXT//"
     fileName = sys.argv[1]
-    logOnly = int(sys.argv[2])
+    fileNameNoPath = fileName.split("\\")
+    fileNameNoPath = fileNameNoPath[len(fileNameNoPath) - 1]
+    logOnly = 0
     os.makedirs(os.path.dirname(out), exist_ok=True)
     f = open(fileName, 'rb')
     Test = readUQInt(f)
@@ -73,11 +75,11 @@ def main():
     elif Test == Comp:
         f.seek(0)
         Decomp = gzip.decompress(f.read())
-        w = open(out+fileName+"DEC", 'wb')
+        w = open(out+fileNameNoPath, 'wb')
         w.write(Decomp)
         w.close()
         f.close()
-        f = open(out+fileName+"DEC", 'rb')
+        f = open(out+fileNameNoPath, 'rb')
         f.seek(8)
         T = PKGD(f)
         if not logOnly:
