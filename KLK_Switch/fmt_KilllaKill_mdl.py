@@ -66,7 +66,7 @@ def noepyLoadModel(data, mdlList):
         bs.seek(BoneLOC)
         for B in range(0, BoneCount):
             BoneName = bs.readBytes(32).decode("ASCII").rstrip("\0")
-            BoneROT = NoeQuat.fromBytes(bs.readBytes(16))
+            BoneROT = NoeQuat.fromBytes(bs.readBytes(16)).transpose()
             BonePOS = NoeVec3.fromBytes(bs.readBytes(12))
             BoneSCA = NoeVec3.fromBytes(bs.readBytes(12))
             BoneParent = bs.readInt()

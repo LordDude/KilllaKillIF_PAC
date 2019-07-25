@@ -44,15 +44,15 @@ def PKGD(f):
 
 
 
-def ExportPKGD(T, f, out):
+def ExportPKGD(T, f, out, fileNamePure):
     print("writing")
-    os.makedirs(os.path.dirname(out), exist_ok=True)
+    os.makedirs(os.path.dirname(out+fileNamePure+"\\"), exist_ok=True)
     F = len(T)
     for M in range(0, F):
         O = T[M]
         f.seek(O.Offset)
         U = f.read(O.Size)
-        w = open(out+O.Name, 'wb')
+        w = open(out+fileNamePure+"\\"+O.Name, 'wb')
         w.write(U)
         w.close()
 
@@ -62,6 +62,7 @@ def main():
     fileName = sys.argv[1]
     fileNameNoPath = fileName.split("\\")
     fileNameNoPath = fileNameNoPath[len(fileNameNoPath) - 1]
+    fileNamePure = fileNameNoPath.split(".")[0]
     logOnly = 0
     os.makedirs(os.path.dirname(out), exist_ok=True)
     f = open(fileName, 'rb')
@@ -71,19 +72,20 @@ def main():
     if Test == int(562951300532036):
         T = PKGD(f)
         if not logOnly:
-            ExportPKGD(T, f, out)
+            ExportPKGD(T, f, out, fileNamePure)
     elif Test == Comp:
         f.seek(0)
         Decomp = gzip.decompress(f.read())
-        w = open(out+fileNameNoPath, 'wb')
+        os.makedirs(os.path.dirname(out+fileNamePure+"\\"), exist_ok=True)
+        w = open(out+fileNamePure+"\\"+fileNameNoPath, 'wb')
         w.write(Decomp)
         w.close()
         f.close()
-        f = open(out+fileNameNoPath, 'rb')
+        f = open(out+fileNamePure+"\\"+fileNameNoPath, 'rb')
         f.seek(8)
         T = PKGD(f)
         if not logOnly:
-            ExportPKGD(T, f, out)
+            ExportPKGD(T, f, out, fileNamePure)
 
 
                 
